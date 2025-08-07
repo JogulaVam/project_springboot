@@ -11,7 +11,15 @@ name: String!,
 description: String!,
 price: Float!,
 category: String!,
+stockQuantity: Int!,
 imageUrl: String,
+}
+
+type CartItem{
+id : ID!,
+user: User!,
+product: Product!,
+quanity: Int!,
 }
 
 type Query{
@@ -20,14 +28,22 @@ getAllUsers: [User!],
 getProductById(id: ID!): Product,
   getAllProducts: [Product!],
   getProductsByCategory(category: String!): [Product!],
+  findProductByName(name: String!): [Product!]!
+  getCartItemsByUserId(userId: ID!): [CartItem!],
+  getCartItemByUserIdAndProductId(userId: ID!, productId: ID!): CartItem,
+  getAllCartItems: [CartItem!],
 }
 
 type Mutation {
   createUser(name: String!, email: String!, password: String!, role: String!): User
   loginUser(email: String!, password: String!): String
-  createProduct(name: String!, description: String!, price: Float!, category: String!, imageUrl: String): Product
-  updateProduct(id: ID!, name: String, description: String, price: Float, category: String, imageUrl: String): Product
+  createProduct(name: String!, description: String!, price: Float!, category: String!,stockQuantity: Int!, imageUrl: String): Product
+  updateProduct(id: ID!, name: String, description: String, price: Float, category: String,stockQuantity: Int!, imageUrl: String): Product
   deleteProduct(id: ID!): String
+  addCartItem(userId: ID!, productId: ID!, quantity: Int!): CartItem
+  updateCartItem(userId: ID!,productId: ID!, quantity: Int!): CartItem
+  deleteCartItem(userId: ID!, productId: ID!): String
+  
 }
 
 

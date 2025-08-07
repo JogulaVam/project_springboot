@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import com.example.demo.Entity.Product;
 import com.example.demo.Repository.ProductRepo;
 
+import graphql.com.google.common.base.Optional;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -32,17 +33,24 @@ public class ProductResolver {
 			.collect(Collectors.toList());
 	}
 	
+	@QueryMapping
+	public List<Product> findProductByName(@Argument String name) {
+		return productRepo.findByNameContainingIgnoreCase(name);
+	}
+	
 	@MutationMapping
 	public Product createProduct(@Argument String name, 
 								  @Argument String description, 
 								  @Argument Double price, 
-								  @Argument String category, 
+								  @Argument String category,
+								  @Argument Integer stockQuantity,
 								  @Argument String imageUrl) {
 		Product product = new Product();
 		product.setName(name);
 		product.setDescription(description);
 		product.setPrice(price);
 		product.setCategory(category);
+		product.setStockQuantity(stockQuantity);
 		product.setImageUrl(imageUrl);
 		return productRepo.save(product);
 	}
@@ -51,7 +59,8 @@ public class ProductResolver {
 								  @Argument String name, 
 								  @Argument String description, 
 								  @Argument Double price, 
-								  @Argument String category, 
+								  @Argument String category,
+								  @Argument Integer stockQuantity,
 								  @Argument String imageUrl) {
 		Product product = productRepo.findById(id).orElse(null);
 		if (product != null) {
@@ -59,6 +68,7 @@ public class ProductResolver {
 			product.setDescription(description);
 			product.setPrice(price);
 			product.setCategory(category);
+			product.setStockQuantity(stockQuantity);
 			product.setImageUrl(imageUrl);
 			
 		}
