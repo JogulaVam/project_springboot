@@ -5,6 +5,30 @@ email : String!
 roles : [String!]!
 }
 
+type Category{
+id : ID!
+name : String!
+}
+
+type Product{
+	id : ID!
+	name : String!
+	description : String
+	imageUrl : String
+	price : Float!
+	stock : Int!
+	category : Category
+}
+
+input ProductInput {
+	name : String!
+	description : String
+	imageUrl : String
+	price : Float!
+	stock : Int!
+	categoryId : ID!
+}
+
 input RegisterInput {
 username: String!
 email: String!
@@ -24,8 +48,14 @@ user : User!
 type Mutation{
 register(input: RegisterInput!): AuthPayload
 login(input: LoginInput): AuthPayload
+addCategory(name: String!): Category
+addProduct(input: ProductInput!) : Product
+updateProduct(id: ID!,input: ProductInput!) : Product
+deleteProduct(id: ID!): String!
 }
 
 type Query{
 hello : String
+products: [Product!]!
+productById(id: ID!): Product
 }
