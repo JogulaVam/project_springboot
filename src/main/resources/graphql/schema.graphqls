@@ -45,6 +45,30 @@ accessToken: String!
 user : User!
 }
 
+type Cart{
+	id :  ID!
+	items: [CartItem!]!
+}
+
+
+type CartItem {
+	id : ID!
+	product: Product!
+	quantity: Int!
+}
+
+type Order{
+	id : ID!
+	total : Float!
+	items : [OrderItem!]!
+} 
+
+type OrderItem {
+	id : ID!
+	productName : String!
+	quantity : Int!
+	price : Float!
+}
 type Mutation{
 register(input: RegisterInput!): AuthPayload
 login(input: LoginInput): AuthPayload
@@ -52,10 +76,15 @@ addCategory(name: String!): Category
 addProduct(input: ProductInput!) : Product
 updateProduct(id: ID!,input: ProductInput!) : Product
 deleteProduct(id: ID!): String!
+addToCart(productId: ID!,quantity: Int!): Cart
+removeFromCart(productId: ID!): Cart
+checkoutCart(productIds: [ID!]): Order
 }
 
 type Query{
 hello : String
 products: [Product!]!
 productById(id: ID!): Product
+myCart: Cart
+myOrders: [Order!]!
 }
