@@ -42,6 +42,11 @@ public class ProductResolver {
 		return categoryRepository.save(Category.builder().name(name).build());
 	}
 	
+	@QueryMapping
+	public List<Category> productCategories(){
+		return categoryRepository.findAll();
+	}
+	
 	@MutationMapping
 	@PreAuthorize("hasRole('ADMIN')")
 	public Product addProduct(@Argument ProductInput input) {
